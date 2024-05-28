@@ -1,54 +1,35 @@
 import { Router } from 'express'
+import CartManager from '../dao/db/CartManager.js'
+
 const router = Router()
-import CartManager from '../managers/CarttManager.js'
 const cartManager = new CartManager()
 
 // Traer todos los carritos
-router.get("/", async (req,res) => {
-    try {
-        const carts = await cartManager.getCarts()
-        res.json(carts)
-    } catch (error) {
-        res.status(404).json({ message: "404 - No hay carritos" });
-    }
+router.get("/", async (req, res) => {
+    const result = await cartManager.getCarts()
+    res.send({ result: "success", payload: result })
 })
-
 
 // Traer un carrito por ID
 router.get("/:cid", async (req, res) => {
-    try {
-        let cid = parseInt(req.params.cid);
-        const cartResult = await cartManager.getCartById(cid);
-        res.json(cartResult);
-
-        } catch (error) {
-        res.status(404).json({ message: "Error 404 - Carrito no encontrado." });
-    }
+    let { cid } = req.params;
+    const result = await cartManager.getCartById(cid);
+    res.send({ result: "success", payload: result })
 })
+
 
 // Agregar un carrito
 router.post("/", async (req, res) => {
-    try {
-        const result = await cartManager.addCart();
-        res.status(200).json(result);
-    }
-    catch (error) {
-        res.status(404).json({ message: "Error 404 - No se pudo agregar el carrito." });
-    }
+    const result = await cartManager.addCart();
+    res.send({ result: "success", payload: result });
 })
 
 // Editar/Agregar un producto al carrito
 router.post("/:cid/products/:pid", async (req, res) => {
-    try {
-        let cid = parseInt(req.params.cid)
-        let pid = parseInt(req.params.pid)
-        const result = await cartManager.updateCart(cid,pid)
-        res.status(200).json(result);
-    }
-    catch (error) {
-        res.status(404).json({ message: "Error 404 - No se pudo agregar el producto al carrito." });
-    }
-    
+    let cid = req.params.cid;
+    let pid = req.params.pid;
+    const result = await cartManager.updateCart(cid, pid);
+    res.send({ result: "success", payload: result });
 })
 
 export default router

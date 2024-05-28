@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 //Creo la coleccion con el nombre
 
-const productCollection = "Products"
+const productCollection = "products"
 
 const productSchema = new mongoose.Schema({
     title: { type: String, required: true, max: 100 },
@@ -15,6 +16,7 @@ const productSchema = new mongoose.Schema({
     thumbnail: { type: String, required: true, max: 100 }
 })
 
+productSchema.plugin(mongoosePaginate)
 const productModel = mongoose.model(productCollection, productSchema)
 
 export default productModel

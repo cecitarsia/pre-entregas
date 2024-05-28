@@ -46,7 +46,6 @@ class ProductManager {
         try {
             const products = await this.getProducts()
 
-
         } catch (error) {
             console.error("Error al actualizar el producto", error);
         }
