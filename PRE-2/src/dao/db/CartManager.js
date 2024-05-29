@@ -24,16 +24,25 @@ class CartManager {
 
     async getCartById(cid) {
 
-    try {
-        let result = await cartModel.findOne({ _id: cid }).populate("products.product");
-        return result;
-    } catch (error) {
-        console.log(error);
+        try {
+            let result = await cartModel.findOne({ _id: cid }).populate("products.product");
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 
-}
 
-    
+    async deleteCart(cid) {
+        try {
+            let result = await cartModel.deleteOne({ _id: cid })
+            return result;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 export default CartManager

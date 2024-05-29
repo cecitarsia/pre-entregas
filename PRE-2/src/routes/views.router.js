@@ -21,7 +21,7 @@ router.get("/products",async(req,res)=>{
 })
 
 
-// Trae la vista de todos los carritos
+// Trae la vista de un carrito
 router.get('/carts/:cid', async(req, res) => {
     let { cid } = req.params;
     let result = await cartModel.findOne({ _id:cid}).populate("products.product").lean();

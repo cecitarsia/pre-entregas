@@ -4,6 +4,8 @@ import CartManager from '../dao/db/CartManager.js'
 const router = Router()
 const cartManager = new CartManager()
 
+
+
 // Traer todos los carritos
 router.get("/", async (req, res) => {
     const result = await cartManager.getCarts()
@@ -31,5 +33,24 @@ router.post("/:cid/products/:pid", async (req, res) => {
     const result = await cartManager.updateCart(cid, pid);
     res.send({ result: "success", payload: result });
 })
+
+//// TO DO /////////////////////////////////////////////////////
+router.delete("/:cid/products/:pid ", (req, res) => {
+    //deberá eliminar del carrito el producto seleccionado.
+})
+
+router.put("/:cid", (req, res) => {
+    // deberá actualizar el carrito con un arreglo de productos con el formato especificado anteriormente.
+})
+
+router.put("/:cid/products/:pid", (req, res) => {
+    // deberá actualizar la cantidad de un producto en el carrito.
+})
+
+router.delete("/:cid", (req, res) => {
+    // deberá eliminar los products del carrito seleccionado.
+})
+///////////////////////////////////////////////////////////////
+
 
 export default router
