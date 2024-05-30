@@ -5,6 +5,11 @@ const router = Router()
 const cartManager = new CartManager()
 
 
+// Agrega un carrito vacio
+router.post("/", async (req, res) => {
+    const result = await cartManager.addCart();
+    res.send({ result: "success", payload: result });
+})
 
 // Traer todos los carritos
 router.get("/", async (req, res) => {
@@ -14,43 +19,48 @@ router.get("/", async (req, res) => {
 
 // Traer un carrito por ID
 router.get("/:cid", async (req, res) => {
-    let { cid } = req.params;
+    let cid = req.params.pid
     const result = await cartManager.getCartById(cid);
     res.send({ result: "success", payload: result })
 })
 
 
-// Agregar un carrito
-router.post("/", async (req, res) => {
-    const result = await cartManager.addCart();
-    res.send({ result: "success", payload: result });
-})
-
-// Editar/Agregar un producto al carrito
+// Agrega un producto a un carrito
 router.post("/:cid/products/:pid", async (req, res) => {
     let cid = req.params.cid;
     let pid = req.params.pid;
-    const result = await cartManager.updateCart(cid, pid);
+    const result = await cartManager.addProductToCart(cid, pid);
     res.send({ result: "success", payload: result });
 })
 
-//// TO DO /////////////////////////////////////////////////////
-router.delete("/:cid/products/:pid ", (req, res) => {
-    //deberá eliminar del carrito el producto seleccionado.
+
+// Elimina del carrito el producto seleccionado >> NO FUNCIONA
+router.delete("/:cid/products/:pid ", async (req, res) => {
+    let cid = req.params.cid;
+    let pid = req.params.pid;
+    console.log(cid, pid)
+    const result = await cartManager.deleteProductFromCart(cid, pid);
+    console.log(result)
+    res.send({ result: "success", payload: result });
 })
 
-router.put("/:cid", (req, res) => {
-    // deberá actualizar el carrito con un arreglo de productos con el formato especificado anteriormente.
+
+// deberá actualizar la cantidad de un producto en el carrito.
+router.put("/:cid/products/:pid", async (req, res) => {
+    let cid = req.params.cid;
+    let pid = req.params.pid;
+    let qty = req.body.quantity
+    const result = await cartManager.addProductQty(cid, pid, qty);
+    res.send({ result: "success", payload: result });
 })
 
-router.put("/:cid/products/:pid", (req, res) => {
-    // deberá actualizar la cantidad de un producto en el carrito.
+// deberá eliminar los products del carrito seleccionado.
+router.delete("/:cid", async (req, res) => {
+    let cid = req.params.cid;
+    const result = await cartManager.deleteProductsInCart(cid);
+    res.send({ result: "success", payload: result });
 })
 
-router.delete("/:cid", (req, res) => {
-    // deberá eliminar los products del carrito seleccionado.
-})
-///////////////////////////////////////////////////////////////
 
 
 export default router

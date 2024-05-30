@@ -7,7 +7,8 @@ const productManager = new ProductManager()
 
 // Traer todos los productos
 router.get("/", async (req,res) => {
-    const products = await productManager.getProducts()
+    const query = req.query
+    const products = await productManager.getProducts(query)
     res.send({ result: "success", payload: products })
 
 })  

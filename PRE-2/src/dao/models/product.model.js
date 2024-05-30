@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate-v2'
 
-//Creo la coleccion con el nombre
 
 const productCollection = "products"
 

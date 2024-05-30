@@ -9,7 +9,7 @@ class ProductManager {
             if (productNotValid) {
                 console.error("Faltan datos.")
             } else {
-                let result = await productModel.create({title, description, code, price, status, stock, category, thumbnail})
+                let result = await productModel.create({ title, description, code, price, status, stock, category, thumbnail })
                 return result
             }
 
@@ -18,12 +18,31 @@ class ProductManager {
         }
     }
 
-    async getProducts() {
+    async getProducts(query) {
         try {
-            let products = await productModel.find()
-            return products
+
+            let { limit = 10, page = 1, filter, sort } = query;
+
+            let sortOptions = {};
+            if (sort) {
+                sortOptions.price = parseInt(sort);
+            }
+
+            let filterOptions = {};
+            if (filter && filter.category) {
+                filterOptions.category = filter.category;
+            }
+
+            let options = {
+                limit: parseInt(limit),
+                page: parseInt(page)
+            };
+
+            let products = await productModel.paginate(filterOptions, options);
+            return products;
+
         } catch (error) {
-            console.log(error)
+            console.error('Error al obtener los productos:', error);
         }
     }
 
@@ -52,24 +71,12 @@ class ProductManager {
     }
 
 
-    async deleteProduct(id) {
-
+    async deleteProduct(pid) {
         try {
-			const products = await this.readProducts ();
-			const index = products.findIndex ( product => product.id === id );
-
-			if (index !== -1 ) {
-				products.splice (index, 1)
-				await fs.writeFile ( this.path, JSON.stringify(products, null, 2));
-
-			} else {
-				console.log('Producto no encontrado.');
-			}
-
-			return "El producto ha sido eliminado"
-
-        } catch (error) {   
-            console.log('No se pudo borrar el producto', error)  
+            let result = await productModel.deleteOne({ _id: pid })
+            return result;
+        } catch (error) {
+            console.log(error)
         }
     }
 }

@@ -13,7 +13,7 @@ const cartManager = new CartManager()
 router.get("/products",async(req,res)=>{
     let page = parseInt(req.query.page);
     if (!page) page = 1;
-    let result = await productModel.paginate({}, { page, limit: 10, lean: true })
+    let result = await productModel.paginate({}, { page, limit: 4, lean: true })
     result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
     result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
     result.isValid = !(page <= 0 || page > result.totalPages)
