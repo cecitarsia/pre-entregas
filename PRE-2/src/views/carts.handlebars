@@ -9,11 +9,10 @@
 
 <body>
     <h1>Mi Carrito</h1>
-    <p>Carrito ID: {{this._id}}</p>
+    <p>Carrito ID: {{cartId}}</p>
     <ul>
         {{#each products}}
-        <li>Producto: {{this.product.title}} &nbsp; Descripción: {{this.product.description}} &nbsp; Precio:
-            {{this.product.price}} &nbsp; Cantidad: {{this.quantity}}</li>
+        <li>Producto: {{this.product.title}} - Descripción: {{this.product.description}} - Precio: ${{this.product.price}} - Cantidad: {{this.quantity}}</li>
         {{/each}}
     </ul>
 </body>

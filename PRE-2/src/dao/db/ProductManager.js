@@ -18,6 +18,7 @@ class ProductManager {
         }
     }
 
+    // Trae los productos con query o valores por defecto
     async getProducts(query) {
         try {
 
@@ -34,10 +35,11 @@ class ProductManager {
             }
 
             let options = {
-                limit: parseInt(limit),
-                page: parseInt(page)
+                limit: parseInt(limit) || 10,
+                page: parseInt(page) || 1,
+                sort: sort ? { price: sort === 'asc' ? 1 : -1 } : {},
+                lean: true
             };
-
             let products = await productModel.paginate(filterOptions, options);
             return products;
 
@@ -47,30 +49,27 @@ class ProductManager {
     }
 
 
-    async getProductById(id) {
+    // Traer un producto por ID
+    async getProductById(pid) {
         try {
-            const products = await this.getProducts()
-            const productFound = products.find((product) => product.id === id)
-            if (!productFound) {
-                return 'El producto buscado no existe'
-            } else {
-                return productFound;
-            }
+            const product = await productModel.findById(String(pid));
+            return product
         } catch (error) {
-            console.error("ID de producto no encontrado", error);
+            console.error("Producto no encontrado", error);
         }
     }
 
-    async updateProduct(id, value) {
+    // Editar un producto por ID
+    async updateProduct(id, productToUpdate) {
         try {
-            const products = await this.getProducts()
-
+            let result = await productModel.updateOne({ _id: id }, productToUpdate);
+            return result;
         } catch (error) {
-            console.error("Error al actualizar el producto", error);
+            console.log('Error al actualizar el producto', error);
         }
     }
 
-
+    // Eliminar un producto por ID
     async deleteProduct(pid) {
         try {
             let result = await productModel.deleteOne({ _id: pid })
@@ -79,7 +78,8 @@ class ProductManager {
             console.log(error)
         }
     }
-}
 
+
+}
 
 export default ProductManager

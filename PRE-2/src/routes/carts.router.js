@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 
 // Traer un carrito por ID
 router.get("/:cid", async (req, res) => {
-    let cid = req.params.pid
+    let cid = req.params.cid
     const result = await cartManager.getCartById(cid);
     res.send({ result: "success", payload: result })
 })

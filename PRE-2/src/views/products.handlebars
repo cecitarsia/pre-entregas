@@ -4,7 +4,7 @@
     <div>
         <p><strong>{{title}}</strong> - {{description}} - Stock: {{stock}} - Precio: ${{price}} </p>
         <div>
-            <button onclick="addProductToCart(this.dataset.productId)" data-product-id="{{_id}}">Agregar al carrito</button>
+            <button onclick="addProductToCart('{{cartId}}', '{{_id}}')" data-product-id="{{_id}}">Agregar al carrito</button>
         </div>
     </div>
     <br />

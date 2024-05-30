@@ -33,7 +33,6 @@ class CartManager {
         } catch (error) {
             console.log(error);
         }
-
     }
 
     // Agrega un producto a un carrito
